@@ -1,7 +1,12 @@
+using URL_Shortener.Client.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddInfrastructure();
+builder.Services.AddDbContext(builder.Configuration);
 
 var app = builder.Build();
 
