@@ -1,4 +1,5 @@
-﻿using URL_Shortener.Client.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using URL_Shortener.Client.Data;
 using URL_Shortener.Client.Interfaces.Repository;
 using URL_Shortener.Client.Models.Entities;
 
@@ -23,5 +24,17 @@ public class UserRepository : IUserRepository
 
         _dbContext.Users.Add(entity);
         _dbContext.SaveChanges();
+    }
+
+    public bool IsUserExist(string login)
+    {
+        return _dbContext.Users.Any(u => u.Login == login);
+    }
+
+    public User GetUserByLogin(string login)
+    {
+        return _dbContext.Users
+            .Include(u => u.Role)
+            .FirstOrDefault(u => u.Login == login);
     }
 }
