@@ -48,6 +48,24 @@ public static class DependencyInjection
                     RequireExpirationTime = false,
                     ValidateLifetime = true
                 };
+                jwt.Events = new()
+                {
+                    OnMessageReceived = context =>
+                    {
+                        if (context.Request.Cookies.ContainsKey("X-Access-Token"))
+                        {
+                            context.Token = context.Request.Cookies["X-Access-Token"];
+                        }
+
+                        return Task.CompletedTask;
+                    }
+                };
             });
+
+        serviceCollection.AddAuthorization(options =>
+        {
+            options.AddPolicy("Admin", p => p.RequireRole("Admin"));
+            options.AddPolicy("User", p => p.RequireRole("Admin", "User"));
+        });
     }
 }
