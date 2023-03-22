@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using URL_Shortener.Client.Data;
 using URL_Shortener.Client.Interfaces.Authentication;
 using URL_Shortener.Client.Interfaces.UnitOfWork;
@@ -25,5 +28,26 @@ public static class DependencyInjection
     {
         serviceCollection.AddDbContext<UrlShortenedDbContext>(options => 
             options.UseSqlServer(configurationManager.GetConnectionString("DefaultConnection")));
+    }
+
+    public static void AddJwt(this IServiceCollection serviceCollection, 
+                              ConfigurationManager configurationManager)
+    {
+        serviceCollection.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(jwt =>
+            {
+                var key = Encoding.ASCII.GetBytes(configurationManager.GetSection("JwtSettings:Secret").Value);
+
+                jwt.SaveToken = true;
+                jwt.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    RequireExpirationTime = false,
+                    ValidateLifetime = true
+                };
+            });
     }
 }
