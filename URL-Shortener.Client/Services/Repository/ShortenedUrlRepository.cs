@@ -1,4 +1,5 @@
-﻿using URL_Shortener.Client.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using URL_Shortener.Client.Data;
 using URL_Shortener.Client.Interfaces.Repository;
 using URL_Shortener.Client.Models.Entities;
 
@@ -24,13 +25,32 @@ public class ShortenedUrlRepository : IShortenedUrlRepository
        }
 
        _dbContext.ShortenedUrls.Add(entity);
-       _dbContext.SaveChanges();
     }
 
-    public void Delete(ShortenedUrl shortenedUrl)
+    public void Delete(int idUrl)
     {
+       var shortenedUrl = _dbContext.ShortenedUrls.FirstOrDefault(su => su.Id == idUrl);
+       if (shortenedUrl == null)
+       {
+           throw new Exception("The specified original url doesn't exist!");
+       }
         _dbContext.ShortenedUrls.Remove(shortenedUrl);
-        _dbContext.SaveChanges();
+    }
+
+    public ShortenedUrl GetById(int idUrl)
+    {
+        return _dbContext.ShortenedUrls
+            .Include(su => su.User)
+            .Include(su => su.User.Role)
+            .FirstOrDefault(su => su.Id == idUrl);
+    }
+
+    public ShortenedUrl GetByOriginalUrl(string originalUrl)
+    {
+        return _dbContext.ShortenedUrls
+            .Include(su => su.User)
+            .Include(su => su.User.Role)
+            .FirstOrDefault(su => su.OriginalUrl == originalUrl);
     }
 
     public IEnumerable<ShortenedUrl> GetAll()
