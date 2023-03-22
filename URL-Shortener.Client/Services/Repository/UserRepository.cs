@@ -23,7 +23,6 @@ public class UserRepository : IUserRepository
         }
 
         _dbContext.Users.Add(entity);
-        _dbContext.SaveChanges();
     }
 
     public bool IsUserExist(string login)
