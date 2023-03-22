@@ -66,7 +66,7 @@ public class AuthenticationService : IAuthenticationService
         
         var jwtToken = _jwtTokenService.GenerateToken(userFromDb.Login, userFromDb.Role.Name);
 
-        return new AuthResult {Token = jwtToken};
+        return new AuthResult {Token = jwtToken, User = userFromDb};
     }
     
     private void GeneratePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
