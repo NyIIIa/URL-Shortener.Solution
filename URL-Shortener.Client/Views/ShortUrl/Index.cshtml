@@ -1,0 +1,46 @@
+﻿@model IEnumerable<URL_Shortener.Client.Models.Entities.ShortenedUrl>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+<table id="shorUrlsTable" class="table">
+  <thead class="thead-dark">
+  <tr>
+    <th scope="col">Id</th>
+    <th scope="col">OriginalUrl</th>
+    <th scope="col">ShortUrl</th>
+    <th scope="col">Info</th>
+  </tr>
+  </thead>
+  <tbody>
+  @{
+    foreach (var shortenedUrl in Model)
+    {
+      <tr id="@shortenedUrl.Id">
+        <td>@shortenedUrl.Id</td>
+        <td>@shortenedUrl.OriginalUrl</td>
+        <td>@shortenedUrl.ShortUrl</td>
+        <td><a href="http://localhost:5137/ShortUrl/Info?originalUrl=@shortenedUrl.OriginalUrl">Info view</a></td>
+      </tr>   
+    }
+  }
+  </tbody>
+</table>
+
+@if (User.Identity.IsAuthenticated)
+{
+  <input id="longUrl" placeholder="Input a long url" type="text">
+  <button id="AddNewUrl">Add a new URL</button>
+  <br/>
+  <br/>
+  <input id="IdUrl" placeholder="Input an id url" type="text">
+  <button id="DeleteUrl">Delete a specified URL</button>
+}
+
+
+
+
+
+
+

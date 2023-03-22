@@ -1,0 +1,12 @@
+﻿@model URL_Shortener.Client.Models.Entities.ShortenedUrl
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<p>Shortened url id - @Model.Id</p>
+<p>Original url - @Model.OriginalUrl</p>
+<p>Short url - @Model.ShortUrl</p>
+<p>Created by - Login: @Model.User.Login;Role: @Model.User.Role.Name</p>
+<p>Created date: @Model.CreatedDate.ToString()</p>
