@@ -19,7 +19,7 @@ public class AuthenticationService : IAuthenticationService
         _unitOfWork = unitOfWork;
     }
     
-    public AuthResult Register(RegisterRequestDto registerRequest)
+    public void Register(RegisterRequestDto registerRequest)
     {
         var isUserExist = _unitOfWork.UserRepository.IsUserExist(registerRequest.Login);
         if (isUserExist)
@@ -46,10 +46,7 @@ public class AuthenticationService : IAuthenticationService
         };
         
         _unitOfWork.UserRepository.Add(user);
-
-        var jwtToken = _jwtTokenService.GenerateToken(user.Login, user.Role.Name);
-
-        return new AuthResult {Token = jwtToken} ;
+        _unitOfWork.SaveChanges();
     }
 
     public AuthResult Login(LoginRequestDto loginRequest)

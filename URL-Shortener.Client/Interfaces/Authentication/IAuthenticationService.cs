@@ -5,6 +5,6 @@ namespace URL_Shortener.Client.Interfaces.Authentication;
 
 public interface IAuthenticationService
 {
-    AuthResult Register(RegisterRequestDto registerRequest);
+    void Register(RegisterRequestDto registerRequest);
     AuthResult Login(LoginRequestDto loginRequest);
 }
