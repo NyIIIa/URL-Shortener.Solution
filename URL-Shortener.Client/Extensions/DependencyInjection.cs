@@ -26,11 +26,18 @@ public static class DependencyInjection
         serviceCollection.Configure<JwtSettings>(configurationManager.GetSection("JwtSettings"));
     }
 
-    public static void AddDbContext(this IServiceCollection serviceCollection,
+    public static void AddLocalDbContext(this IServiceCollection serviceCollection,
                                     ConfigurationManager configurationManager)
     {
         serviceCollection.AddDbContext<UrlShortenedDbContext>(options => 
             options.UseSqlServer(configurationManager.GetConnectionString("DefaultConnection")));
+    }
+    
+    public static void AddRemoteDbContext(this IServiceCollection serviceCollection,
+                                    ConfigurationManager configurationManager)
+    {
+        serviceCollection.AddDbContext<UrlShortenedDbContext>(options => 
+            options.UseSqlServer(configurationManager.GetConnectionString("RemoteConnection")));
     }
 
     public static void AddJwt(this IServiceCollection serviceCollection, 
@@ -70,5 +77,12 @@ public static class DependencyInjection
             options.AddPolicy("Admin", p => p.RequireRole("Admin"));
             options.AddPolicy("User", p => p.RequireRole("Admin", "User"));
         });
+    }
+
+    public static void InnitDatabase(this IServiceProvider serviceProvider)
+    {
+        using var serviceScope = serviceProvider.CreateScope();
+
+        serviceScope.ServiceProvider.GetService<UrlShortenedDbContext>().Database.Migrate();
     }
 }

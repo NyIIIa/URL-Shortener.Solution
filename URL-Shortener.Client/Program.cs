@@ -6,10 +6,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddDbContext(builder.Configuration);
+builder.Services.AddRemoteDbContext(builder.Configuration);
 builder.Services.AddJwt(builder.Configuration);
 
 var app = builder.Build();
+
+app.Services.InnitDatabase();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
