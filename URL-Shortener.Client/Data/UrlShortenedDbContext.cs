@@ -10,7 +10,7 @@ public class UrlShortenedDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<ShortenedUrl> ShortenedUrls { get; set; }
-
+    public DbSet<UrlShortenerAlgorithm> UrlShortAlgorithms { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -28,5 +28,12 @@ public class UrlShortenedDbContext : DbContext
             new Role(){Id = 1, Name = "Admin"},
             new Role(){Id = 2, Name = "User"},
         });
+
+        modelBuilder.Entity<UrlShortenerAlgorithm>()
+            .HasData(new UrlShortenerAlgorithm()
+            {
+                Id = 1,
+                Description = ""
+            });
     }
 }
