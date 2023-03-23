@@ -1,0 +1,14 @@
+﻿@model URL_Shortener.Client.Models.Entities.UrlShortenerAlgorithm
+
+@{
+    ViewBag.Title = "About algorithm";
+    Layout = "_Layout";
+}
+
+<form asp-action="Edit">
+    <input name="Id" value="@Model.Id" type="hidden">
+    <textarea name="Description" rows="10" cols="50">@Model.Description
+    </textarea>
+    <br>
+    <button>Edit</button>
+</form>

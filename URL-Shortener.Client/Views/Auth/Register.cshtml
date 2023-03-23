@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Register page";
+    Layout = "_Layout";
+}
+
+<form asp-action="Register">
+    <label>Login:</label>
+    <input type="text" name="Login">
+    <label>Password:</label>
+    <input type="password" name="Password">
+    <label>Role:</label>
+    <select name="Role">
+        <option value="Admin">Admin</option>
+        <option value="User">User</option>
+    </select>
+    <button>Register</button>
+</form>
